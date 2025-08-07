@@ -1,0 +1,572 @@
+[
+  {
+    "plot_number": 1,
+    "facing": "East",
+    "square_feet": 1400,
+    "status": "booked"
+  },
+  {
+    "plot_number": 2,
+    "facing": "North",
+    "square_feet": 1550,
+    "status": "hold"
+  },
+  {
+    "plot_number": 3,
+    "facing": "South",
+    "square_feet": 1700,
+    "status": "complete"
+  },
+  {
+    "plot_number": 4,
+    "facing": "East",
+    "square_feet": 1850,
+    "status": "complete"
+  },
+  {
+    "plot_number": 5,
+    "facing": "North",
+    "square_feet": 2000,
+    "status": "booked"
+  },
+  {
+    "plot_number": 6,
+    "facing": "South",
+    "square_feet": 2150,
+    "status": "hold"
+  },
+  {
+    "plot_number": 7,
+    "facing": "East",
+    "square_feet": 1400,
+    "status": "complete"
+  },
+  {
+    "plot_number": 8,
+    "facing": "North",
+    "square_feet": 1550,
+    "status": "complete"
+  },
+  {
+    "plot_number": 9,
+    "facing": "South",
+    "square_feet": 1700,
+    "status": "booked"
+  },
+  {
+    "plot_number": 10,
+    "facing": "East",
+    "square_feet": 1850,
+    "status": "hold"
+  },
+  {
+    "plot_number": 11,
+    "facing": "North",
+    "square_feet": 2000,
+    "status": "complete"
+  },
+  {
+    "plot_number": 12,
+    "facing": "South",
+    "square_feet": 2150,
+    "status": "complete"
+  },
+  {
+    "plot_number": 13,
+    "facing": "East",
+    "square_feet": 1400,
+    "status": "booked"
+  },
+  {
+    "plot_number": 14,
+    "facing": "North",
+    "square_feet": 1550,
+    "status": "hold"
+  },
+  {
+    "plot_number": 15,
+    "facing": "South",
+    "square_feet": 1700,
+    "status": "complete"
+  },
+  {
+    "plot_number": 16,
+    "facing": "East",
+    "square_feet": 1850,
+    "status": "complete"
+  },
+  {
+    "plot_number": 17,
+    "facing": "North",
+    "square_feet": 2000,
+    "status": "booked"
+  },
+  {
+    "plot_number": 18,
+    "facing": "South",
+    "square_feet": 2150,
+    "status": "hold"
+  },
+  {
+    "plot_number": 19,
+    "facing": "East",
+    "square_feet": 1400,
+    "status": "complete"
+  },
+  {
+    "plot_number": 20,
+    "facing": "North",
+    "square_feet": 1550,
+    "status": "complete"
+  },
+  {
+    "plot_number": 21,
+    "facing": "South",
+    "square_feet": 1700,
+    "status": "booked"
+  },
+  {
+    "plot_number": 22,
+    "facing": "East",
+    "square_feet": 1850,
+    "status": "hold"
+  },
+  {
+    "plot_number": 23,
+    "facing": "North",
+    "square_feet": 2000,
+    "status": "complete"
+  },
+  {
+    "plot_number": 24,
+    "facing": "South",
+    "square_feet": 2150,
+    "status": "complete"
+  },
+  {
+    "plot_number": 25,
+    "facing": "East",
+    "square_feet": 1400,
+    "status": "booked"
+  },
+  {
+    "plot_number": 26,
+    "facing": "North",
+    "square_feet": 1550,
+    "status": "hold"
+  },
+  {
+    "plot_number": 27,
+    "facing": "South",
+    "square_feet": 1700,
+    "status": "complete"
+  },
+  {
+    "plot_number": 28,
+    "facing": "East",
+    "square_feet": 1850,
+    "status": "complete"
+  },
+  {
+    "plot_number": 29,
+    "facing": "North",
+    "square_feet": 2000,
+    "status": "booked"
+  },
+  {
+    "plot_number": 30,
+    "facing": "South",
+    "square_feet": 2150,
+    "status": "hold"
+  },
+  {
+    "plot_number": 31,
+    "facing": "East",
+    "square_feet": 1400,
+    "status": "complete"
+  },
+  {
+    "plot_number": 32,
+    "facing": "North",
+    "square_feet": 1550,
+    "status": "complete"
+  },
+  {
+    "plot_number": 33,
+    "facing": "South",
+    "square_feet": 1700,
+    "status": "booked"
+  },
+  {
+    "plot_number": 34,
+    "facing": "East",
+    "square_feet": 1850,
+    "status": "hold"
+  },
+  {
+    "plot_number": 35,
+    "facing": "North",
+    "square_feet": 2000,
+    "status": "complete"
+  },
+  {
+    "plot_number": 36,
+    "facing": "South",
+    "square_feet": 2150,
+    "status": "complete"
+  },
+  {
+    "plot_number": 37,
+    "facing": "East",
+    "square_feet": 1400,
+    "status": "booked"
+  },
+  {
+    "plot_number": 38,
+    "facing": "North",
+    "square_feet": 1550,
+    "status": "hold"
+  },
+  {
+    "plot_number": 39,
+    "facing": "South",
+    "square_feet": 1700,
+    "status": "complete"
+  },
+  {
+    "plot_number": 40,
+    "facing": "East",
+    "square_feet": 1850,
+    "status": "complete"
+  },
+  {
+    "plot_number": 41,
+    "facing": "North",
+    "square_feet": 2000,
+    "status": "booked"
+  },
+  {
+    "plot_number": 42,
+    "facing": "South",
+    "square_feet": 2150,
+    "status": "hold"
+  },
+  {
+    "plot_number": 43,
+    "facing": "East",
+    "square_feet": 1400,
+    "status": "complete"
+  },
+  {
+    "plot_number": 44,
+    "facing": "North",
+    "square_feet": 1550,
+    "status": "complete"
+  },
+  {
+    "plot_number": 45,
+    "facing": "South",
+    "square_feet": 1700,
+    "status": "booked"
+  },
+  {
+    "plot_number": 46,
+    "facing": "East",
+    "square_feet": 1850,
+    "status": "hold"
+  },
+  {
+    "plot_number": 47,
+    "facing": "North",
+    "square_feet": 2000,
+    "status": "complete"
+  },
+  {
+    "plot_number": 48,
+    "facing": "South",
+    "square_feet": 2150,
+    "status": "complete"
+  },
+  {
+    "plot_number": 49,
+    "facing": "East",
+    "square_feet": 1400,
+    "status": "booked"
+  },
+  {
+    "plot_number": 50,
+    "facing": "North",
+    "square_feet": 1550,
+    "status": "hold"
+  },
+  {
+    "plot_number": 51,
+    "facing": "South",
+    "square_feet": 1700,
+    "status": "complete"
+  },
+  {
+    "plot_number": 52,
+    "facing": "East",
+    "square_feet": 1850,
+    "status": "complete"
+  },
+  {
+    "plot_number": 53,
+    "facing": "North",
+    "square_feet": 2000,
+    "status": "booked"
+  },
+  {
+    "plot_number": 54,
+    "facing": "South",
+    "square_feet": 2150,
+    "status": "hold"
+  },
+  {
+    "plot_number": 55,
+    "facing": "East",
+    "square_feet": 1400,
+    "status": "complete"
+  },
+  {
+    "plot_number": 56,
+    "facing": "North",
+    "square_feet": 1550,
+    "status": "complete"
+  },
+  {
+    "plot_number": 57,
+    "facing": "South",
+    "square_feet": 1700,
+    "status": "booked"
+  },
+  {
+    "plot_number": 58,
+    "facing": "East",
+    "square_feet": 1850,
+    "status": "hold"
+  },
+  {
+    "plot_number": 59,
+    "facing": "North",
+    "square_feet": 2000,
+    "status": "complete"
+  },
+  {
+    "plot_number": 60,
+    "facing": "South",
+    "square_feet": 2150,
+    "status": "complete"
+  },
+  {
+    "plot_number": 61,
+    "facing": "East",
+    "square_feet": 1400,
+    "status": "booked"
+  },
+  {
+    "plot_number": 62,
+    "facing": "North",
+    "square_feet": 1550,
+    "status": "hold"
+  },
+  {
+    "plot_number": 63,
+    "facing": "South",
+    "square_feet": 1700,
+    "status": "complete"
+  },
+  {
+    "plot_number": 64,
+    "facing": "East",
+    "square_feet": 1850,
+    "status": "complete"
+  },
+  {
+    "plot_number": 65,
+    "facing": "North",
+    "square_feet": 2000,
+    "status": "booked"
+  },
+  {
+    "plot_number": 66,
+    "facing": "South",
+    "square_feet": 2150,
+    "status": "hold"
+  },
+  {
+    "plot_number": 67,
+    "facing": "East",
+    "square_feet": 1400,
+    "status": "complete"
+  },
+  {
+    "plot_number": 68,
+    "facing": "North",
+    "square_feet": 1550,
+    "status": "complete"
+  },
+  {
+    "plot_number": 69,
+    "facing": "South",
+    "square_feet": 1700,
+    "status": "booked"
+  },
+  {
+    "plot_number": 70,
+    "facing": "East",
+    "square_feet": 1850,
+    "status": "hold"
+  },
+  {
+    "plot_number": 71,
+    "facing": "North",
+    "square_feet": 2000,
+    "status": "complete"
+  },
+  {
+    "plot_number": 72,
+    "facing": "South",
+    "square_feet": 2150,
+    "status": "complete"
+  },
+  {
+    "plot_number": 73,
+    "facing": "East",
+    "square_feet": 1400,
+    "status": "booked"
+  },
+  {
+    "plot_number": 74,
+    "facing": "North",
+    "square_feet": 1550,
+    "status": "hold"
+  },
+  {
+    "plot_number": 75,
+    "facing": "South",
+    "square_feet": 1700,
+    "status": "complete"
+  },
+  {
+    "plot_number": 76,
+    "facing": "East",
+    "square_feet": 1850,
+    "status": "complete"
+  },
+  {
+    "plot_number": 77,
+    "facing": "North",
+    "square_feet": 2000,
+    "status": "booked"
+  },
+  {
+    "plot_number": 78,
+    "facing": "South",
+    "square_feet": 2150,
+    "status": "hold"
+  },
+  {
+    "plot_number": 79,
+    "facing": "East",
+    "square_feet": 1400,
+    "status": "complete"
+  },
+  {
+    "plot_number": 80,
+    "facing": "North",
+    "square_feet": 1550,
+    "status": "complete"
+  },
+  {
+    "plot_number": 81,
+    "facing": "South",
+    "square_feet": 1700,
+    "status": "booked"
+  },
+  {
+    "plot_number": 82,
+    "facing": "East",
+    "square_feet": 1850,
+    "status": "hold"
+  },
+  {
+    "plot_number": 83,
+    "facing": "North",
+    "square_feet": 2000,
+    "status": "complete"
+  },
+  {
+    "plot_number": 84,
+    "facing": "South",
+    "square_feet": 2150,
+    "status": "complete"
+  },
+  {
+    "plot_number": 85,
+    "facing": "East",
+    "square_feet": 1400,
+    "status": "booked"
+  },
+  {
+    "plot_number": 86,
+    "facing": "North",
+    "square_feet": 1550,
+    "status": "hold"
+  },
+  {
+    "plot_number": 87,
+    "facing": "South",
+    "square_feet": 1700,
+    "status": "complete"
+  },
+  {
+    "plot_number": 88,
+    "facing": "East",
+    "square_feet": 1850,
+    "status": "complete"
+  },
+  {
+    "plot_number": 89,
+    "facing": "North",
+    "square_feet": 2000,
+    "status": "booked"
+  },
+  {
+    "plot_number": 90,
+    "facing": "South",
+    "square_feet": 2150,
+    "status": "hold"
+  },
+  {
+    "plot_number": 91,
+    "facing": "East",
+    "square_feet": 1400,
+    "status": "complete"
+  },
+  {
+    "plot_number": 92,
+    "facing": "North",
+    "square_feet": 1550,
+    "status": "complete"
+  },
+  {
+    "plot_number": 93,
+    "facing": "South",
+    "square_feet": 1700,
+    "status": "booked"
+  },
+  {
+    "plot_number": 94,
+    "facing": "East",
+    "square_feet": 1850,
+    "status": "hold"
+  },
+  {
+    "plot_number": 95,
+    "facing": "North",
+    "square_feet": 2000,
+    "status": "complete"
+  }
+]

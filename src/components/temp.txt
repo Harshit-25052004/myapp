@@ -1,0 +1,247 @@
+import { useState, useEffect } from 'react';
+import { X } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import apiService from '../services/apiService';
+import { mockBackendAPI } from '../data/mockBackend';
+import './BookingPopup.css';
+
+export default function BookingPopup({ isOpen, onClose, propertyName, propertyId, plotNumber }) {
+  const { user, isBackendAvailable } = useAuth();
+  const [formData, setFormData] = useState({
+    clientName: user?.name || '',
+    clientPhone: '',
+    aadharNumber: '',
+    panNumber: '',
+    plotNumber: plotNumber || '',
+    amount: '',
+    cashPayment: '',
+    chequePayment: ''
+  });
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (plotNumber) {
+      setFormData(prev => ({
+        ...prev,
+        plotNumber: plotNumber
+      }));
+    }
+  }, [plotNumber]);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    if (!propertyId) {
+      alert('Property ID is missing');
+      setLoading(false);
+      return;
+    }
+
+    // Validate required fields
+    if (!formData.clientName || !formData.clientPhone || !formData.aadharNumber ||
+        !formData.plotNumber || !formData.amount) {
+      alert('Please fill in all required fields');
+      setLoading(false);
+      return;
+    }
+
+    const bookingData = {
+      property_id: propertyId,
+      client_name: formData.clientName,
+      client_phone: formData.clientPhone,
+      client_aadhar: formData.aadharNumber,
+      plot_number: formData.plotNumber,
+      amount: parseFloat(formData.amount),
+      cash_payment: parseFloat(formData.cashPayment) || 0,
+      cheque_payment: parseFloat(formData.chequePayment) || 0
+    };
+
+    try {
+      let result;
+      if (isBackendAvailable) {
+        // Use Flask backend
+        console.log('Using Flask backend for booking submission');
+        result = await apiService.createBooking(bookingData);
+      } else {
+        // Use mock backend for demo
+        console.log('Using mock backend for booking submission');
+        result = await mockBackendAPI.createBooking(bookingData);
+      }
+
+      if (result.success) {
+        alert(`Booking submitted successfully! ${isBackendAvailable ? '' : '(Demo mode)'}`);
+        // Reset form and close
+        setFormData({
+          clientName: user?.name || '',
+          clientPhone: '',
+          aadharNumber: '',
+          panNumber: '',
+          plotNumber: plotNumber || '',
+          amount: '',
+          cashPayment: '',
+          chequePayment: ''
+        });
+        onClose();
+      } else {
+        throw new Error(result.error || 'Booking failed');
+      }
+    } catch (error) {
+      console.error('Error submitting booking:', error);
+      alert(`Failed to submit booking: ${error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <div className="booking-popup-overlay" onClick={onClose}>
+      <div className="booking-popup" onClick={(e) => e.stopPropagation()}>
+        <div className="booking-popup-header">
+          <h2 className="booking-popup-title">Book Property</h2>
+          <button className="close-btn" onClick={onClose}>
+            <X size={24} />
+          </button>
+        </div>
+        
+        <div className="property-name-display">
+          <h3>{propertyName}</h3>
+        </div>
+
+        <form onSubmit={handleSubmit} className="booking-form">
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="clientName">Client Name *</label>
+              <input
+                type="text"
+                id="clientName"
+                name="clientName"
+                value={formData.clientName}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="clientPhone">Phone Number *</label>
+              <input
+                type="tel"
+                id="clientPhone"
+                name="clientPhone"
+                value={formData.clientPhone}
+                onChange={handleInputChange}
+                placeholder="9876543210"
+                maxLength="10"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="aadharNumber">Aadhar Card Number *</label>
+              <input
+                type="text"
+                id="aadharNumber"
+                name="aadharNumber"
+                value={formData.aadharNumber}
+                onChange={handleInputChange}
+                placeholder="123456789012"
+                maxLength="12"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="panNumber">PAN Card Number</label>
+              <input
+                type="text"
+                id="panNumber"
+                name="panNumber"
+                value={formData.panNumber}
+                onChange={handleInputChange}
+                placeholder="ABCDE1234F"
+                maxLength="10"
+                style={{ textTransform: 'uppercase' }}
+              />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="plotNumber">Plot Number *</label>
+              <input
+                type="text"
+                id="plotNumber"
+                name="plotNumber"
+                value={formData.plotNumber}
+                onChange={handleInputChange}
+                placeholder="Enter plot number"
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="amount">Total Amount (₹) *</label>
+              <input
+                type="number"
+                id="amount"
+                name="amount"
+                value={formData.amount}
+                onChange={handleInputChange}
+                placeholder="500000"
+                min="0"
+                step="1000"
+                required
+              />
+            </div>
+          </div>
+
+          <div className="form-row">
+            <div className="form-group">
+              <label htmlFor="cashPayment">Cash Payment (₹)</label>
+              <input
+                type="number"
+                id="cashPayment"
+                name="cashPayment"
+                value={formData.cashPayment}
+                onChange={handleInputChange}
+                placeholder="0"
+                min="0"
+                step="1000"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="chequePayment">Cheque Payment (₹)</label>
+              <input
+                type="number"
+                id="chequePayment"
+                name="chequePayment"
+                value={formData.chequePayment}
+                onChange={handleInputChange}
+                placeholder="0"
+                min="0"
+                step="1000"
+              />
+            </div>
+          </div>
+
+          <button type="submit" className="submit-btn" disabled={loading}>
+            {loading ? 'Submitting...' : 'Submit Booking'}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
