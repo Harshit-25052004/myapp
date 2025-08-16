@@ -4,6 +4,7 @@ import './FeaturedCarousel.css';
 import { useAuth } from '../context/AuthContext';
 import BookingPopup from './BookingPopup';
 import ViewPropertyPopup from './ViewPropertyPopup';
+import { useNavigate } from 'react-router-dom';
 
 export default function FeaturedCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -14,6 +15,7 @@ export default function FeaturedCarousel() {
   const [properties, setProperties] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     setLoading(true);
@@ -61,7 +63,8 @@ export default function FeaturedCarousel() {
 
   const currentProperties = getCurrentProperties();
 
-  const openBookingPopup = (property) => {
+  const openBookingPopup = (property, e) => {
+    e.stopPropagation(); // prevent card click
     setSelectedProperty(property);
     setIsBookingPopupOpen(true);
   };
@@ -71,7 +74,8 @@ export default function FeaturedCarousel() {
     setSelectedProperty(null);
   };
 
-  const openViewPropertyPopup = (property) => {
+  const openViewPropertyPopup = (property, e) => {
+    e.stopPropagation(); // prevent card click
     console.log("Opening view popup for property:", property);
     setSelectedProperty(property);
     setIsViewPopupOpen(true);
@@ -97,65 +101,69 @@ export default function FeaturedCarousel() {
   return (
     <div className="featured-carousel">
       <h2 className="carousel-title">FEATURED PROPERTIES</h2>
-      
+
       <div className="carousel-container">
         {totalPages > 1 && (
           <button className="carousel-btn carousel-btn-left" onClick={prevSlide}>‹</button>
         )}
-        
+
         <div className="properties-grid">
           {currentProperties.map((property, index) => (
-            <div key={property._id || index} className="property-card">
+            <div
+              key={property._id || index}
+              className="property-card"
+              onClick={() => navigate(`/property/${property._id}`)} // Navigate on card click
+            >
               <div className="property-image-container">
                 {property.image ? (
                   <img src={property.image} alt={property.name} className="property-image" />
                 ) : (
                   <div className="property-image placeholder-image">No Image</div>
                 )}
-                
+
                 <div className="property-overlay">
-                  <button 
+                  <button
                     className="view-details-btn"
-                    onClick={() => openViewPropertyPopup(property)}
+                    onClick={(e) => openViewPropertyPopup(property, e)}
                   >
                     View Details
                   </button>
                 </div>
               </div>
-              
+
               <div className="property-content">
                 <div className="property-price">
                   ₹ {property.rate ? (property.rate * 1000).toLocaleString() : 'Price not available'}
                 </div>
-                
+
                 <h3 className="property-name">{property.name || 'Unnamed Property'}</h3>
-                
+
                 <div className="property-location">
-                  {property.address?.area || 'Area not specified'} | {property.address?.city || 'City not specified'}
+                  {(property.address?.area || 'Unknown Area') + ' | ' + (property.address?.city || 'Unknown City')}
                 </div>
-                
+
                 <div className="property-specs">
                   {property.specification || 'No specs'} | {property.total_plots || '0'} Plots
                 </div>
-                
+
                 <div className="property-actions">
                   {isAuthenticated ? (
                     <div className="button-group">
-                      <button 
+                      <button
                         className="book-btn"
-                        onClick={() => openBookingPopup(property)}
+                        onClick={(e) => openBookingPopup(property, e)}
                       >
                         Book
                       </button>
-                      <button 
+                      <button
                         className="view-btn"
-                        onClick={() => openViewPropertyPopup(property)}
+                        onClick={(e) => openViewPropertyPopup(property, e)}
                       >
                         View
                       </button>
                     </div>
                   ) : (
-                    <button className="buy-btn">
+                    <button className="buy-btn" onClick={(e) => e.stopPropagation()}>
                       Buy
                     </button>
                   )}
@@ -164,13 +172,12 @@ export default function FeaturedCarousel() {
             </div>
           ))}
         </div>
-        
+
         {totalPages > 1 && (
           <button className="carousel-btn carousel-btn-right" onClick={nextSlide}>›</button>
         )}
       </div>
 
-      {/* Carousel dots */}
       {totalPages > 1 && (
         <div className="carousel-dots">
           {Array.from({ length: totalPages }).map((_, index) => (
@@ -197,8 +204,7 @@ export default function FeaturedCarousel() {
         <ViewPropertyPopup
           isOpen={isViewPopupOpen}
           onClose={closeViewPropertyPopup}
-          propertyId={selectedProperty._id}
-          propertyName={selectedProperty.name}
+          property={selectedProperty}
         />
       )}
     </div>

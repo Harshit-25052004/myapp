@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import SuccessPopup from '../components/SuccessPopup';
 import './LoginModal.css';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState('');
+  const [userid, setUserid] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,7 +28,7 @@ export default function Login() {
     setError('');
 
     try {
-      const result = await login(email, password);
+      const result = await login(userid, password);
 
       if (result.success) {
         setSuccessUser(result.user);
@@ -66,7 +66,7 @@ export default function Login() {
           <div className="circle circle-2"></div>
           <div className="circle circle-3"></div>
         </div>
-        
+
         <div className="welcome-section">
           <h1 className="welcome-title">Welcome Back</h1>
           <p className="welcome-subtitle">
@@ -97,29 +97,14 @@ export default function Login() {
               </div>
             )}
 
-            <div style={{
-              background: '#eff6ff',
-              border: '1px solid #bfdbfe',
-              borderRadius: '8px',
-              padding: '12px',
-              marginBottom: '16px',
-              fontSize: '0.875rem',
-              color: '#1e40af'
-            }}>
-              <strong>Demo Accounts:</strong><br />
-              • harshit@havelhousing.com / 12345678<br />
-              • shantanu@havelhousing.com / 12345678
-            </div>
-
             <div className="form-group">
               <div className="input-group">
-                <Mail className="input-icon" size={20} />
                 <input
-                  type="email"
+                  type="text"
                   className="form-input"
-                  placeholder="Email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="User ID"
+                  value={userid}
+                  onChange={(e) => setUserid(e.target.value)}
                   required
                   disabled={loading}
                 />

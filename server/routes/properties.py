@@ -1,87 +1,88 @@
 from flask import Blueprint, jsonify
-from bson import ObjectId, errors
+from bson import ObjectId
 
 def properties_bp(db):
+    properties_collection = db.properties
     bp = Blueprint('properties', __name__)
 
-    @bp.route('/')
+    # ---------------------------
+    # GET all properties
+    # ---------------------------
+    @bp.route('/', methods=['GET'])
     def get_properties():
         try:
-            print("📋 Fetching all properties...")
-            
-            # Return all necessary fields for the frontend
-            properties = list(db.properties.find({}, {
-                '_id': 1, 
-                'name': 1, 
-                'rate': 1, 
-                'address': 1, 
-                'specification': 1, 
-                'total_plots': 1,
-                'image': 1
-            }))
-            
-            print(f"Found {len(properties)} properties")
-            
-            # Convert ObjectId to string for JSON serialization
-            for prop in properties:
-                prop['_id'] = str(prop['_id'])
-            
-            return jsonify(properties)
-        
+            properties = list(properties_collection.find())
+            for p in properties:
+                p["_id"] = str(p["_id"])
+            return jsonify(properties), 200
         except Exception as e:
-            print(f"❌ Error in get_properties: {str(e)}")
-            return jsonify({"error": f"Internal Server Error: {str(e)}"}), 500
+            return jsonify({"error": str(e)}), 500
 
+    # ---------------------------
+    # GET grouped plots for a property
+    # ---------------------------
     @bp.route('/<property_id>/plots', methods=['GET'])
-    def get_plots_by_property(property_id):
+    def get_property_plots(property_id):
+        # 1️⃣ Validate ObjectId format
         try:
-            print(f"🔍 Received request for property_id: {property_id}")
-            
-            # Validate ObjectId format
-            try:
-                object_id = ObjectId(property_id)
-                print(f"✅ Successfully converted to ObjectId: {object_id}")
-            except errors.InvalidId:
-                print(f"❌ Invalid ObjectId format: {property_id}")
-                return jsonify({"error": "Invalid property ID format"}), 400
+            prop_id = property_id
+        except Exception:
+            return jsonify({
+                "error": "Invalid property ID format",
+                "hint": "Use a valid 24-character hex MongoDB ObjectId"
+            }), 400
 
-            # Check if property exists
-            print(f"🔍 Searching for property in database...")
-            property_data = db.properties.find_one({"_id": object_id}, {"plots": 1, "_id": 0})
-            
+        # 2️⃣ Check if property exists
+        property_data = properties_collection.find_one({"_id": prop_id})
+        if not property_data:
+            return jsonify({
+                "error": "Property not found",
+                "property_id": property_id,
+                "hint": "Check if this ID exists in your database and DB name is correct"
+            }), 404
+
+        # 3️⃣ Check if plots field exists
+        plots = property_data.get("plots")
+        if not plots:
+            return jsonify({
+                "error": "No plots found for this property",
+                "property_id": property_id,
+                "name": property_data.get("name", "")
+            }), 200  # Valid request, just no data
+
+        # 4️⃣ Group plots by status
+        grouped = {
+            "available": [],
+            "booked": [],
+            "hold": [],
+            "complete": []
+        }
+        for plot in plots:
+            status = plot.get("status", "").lower()
+            if status in grouped:
+                grouped[status].append(plot)
+            else:
+                grouped["available"].append(plot)  # default fallback
+
+        # 5️⃣ Return grouped plots
+        return jsonify({
+            "property_id": property_id,
+            "name": property_data.get("name", ""),
+            "plots": grouped
+        }), 200
+    
+
+    @bp.route('/<property_id>', methods=['GET'])
+    def get_property_by_id(property_id):
+        try:
+            prop_id = property_id
+            property_data = properties_collection.find_one({"_id": prop_id})
             if not property_data:
-                print(f"❌ Property not found for ID: {property_id}")
-                # Let's also check what properties DO exist
-                all_properties = list(db.properties.find({}, {"_id": 1, "name": 1}))
-                print(f"Available properties in database:")
-                for prop in all_properties:
-                    print(f"   - {prop['_id']} ({prop.get('name', 'No name')})")
                 return jsonify({"error": "Property not found"}), 404
-
-            plots = property_data.get("plots", [])
-            print(f"✅ Found {len(plots)} plots for property")
-
-            # If no plots field exists, let's check what fields ARE available
-            if "plots" not in property_data:
-                # Get the full property to see its structure
-                full_property = db.properties.find_one({"_id": object_id})
-                print(f"📋 Property structure: {list(full_property.keys()) if full_property else 'None'}")
-
-            categorized = {
-                "all": plots,
-                "available": [p for p in plots if p.get("status", "").lower() == "available"],
-                "booked": [p for p in plots if p.get("status", "").lower() == "booked"],
-                "hold": [p for p in plots if p.get("status", "").lower() == "hold"],
-                "complete": [p for p in plots if p.get("status", "").lower() == "complete"]
-            }
-
-            print(f"✅ Returning categorized plots: all={len(plots)}, available={len(categorized['available'])}")
-            return jsonify(categorized)
-
+        
+            property_data['_id'] = str(property_data['_id'])
+            return jsonify(property_data), 200
         except Exception as e:
-            print(f"❌ Error in get_plots_by_property: {str(e)}")
-            import traceback
-            traceback.print_exc()
-            return jsonify({"error": f"Internal Server Error: {str(e)}"}), 500
+            return jsonify({"error": str(e)}), 500
 
     return bp

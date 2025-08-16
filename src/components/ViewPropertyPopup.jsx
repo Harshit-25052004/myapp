@@ -1,174 +1,148 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import {
+  X, MapPin, Tag, IndianRupee, Home, Clock,
+  CheckCircle, Compass, Square
+} from 'lucide-react';
 import './ViewPropertyPopup.css';
 import BookingPopup from './BookingPopup';
-import axios from 'axios';
 
-export default function ViewPropertyPopup({ isOpen, onClose, propertyId, propertyName }) {
-  const [plots, setPlots] = useState([]);
-  const [selectedPlot, setSelectedPlot] = useState(null);
-  const [isBookingPopupOpen, setIsBookingPopupOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+const statusConfig = {
+  all: { label: 'All', countClass: 'all' },
+  available: { label: 'Available', countClass: 'available' },
+  booked: { label: 'Booked', countClass: 'booked' },
+  hold: { label: 'Hold', countClass: 'hold' },
+  complete: { label: 'Complete', countClass: 'complete' },
+};
+
+export default function ViewPropertyPopup({ isOpen, onClose, property }) {
+  const [plotData, setPlotData] = useState({
+    all: [], available: [], booked: [], hold: [], complete: []
+  });
+  const [bookingData, setBookingData] = useState(null);
+  const [selectedStatus, setSelectedStatus] = useState('all');
 
   useEffect(() => {
-    if (isOpen && propertyId) {
-      console.log("Fetching plots for property ID:", propertyId);
-      setLoading(true);
-      setError(null);
-      
-      // Ensure propertyId is a string and clean it
-      const cleanPropertyId = String(propertyId).trim();
-      
-      axios.get(`http://localhost:5000/api/properties/${cleanPropertyId}/plots`)
-        .then(res => {
-          console.log("Plots API response:", res.data);
-          if (res.data && res.data.all) {
-            setPlots(res.data.all);
-            setError(null);
+    if (property?._id) {
+      axios
+        .get(`http://localhost:5000/api/properties/${property._id}/plots`)
+        .then((res) => {
+          if (res.data && res.data.plots) {
+            const grouped = res.data.plots;
+            const allPlots = [
+              ...grouped.available,
+              ...grouped.booked,
+              ...grouped.hold,
+              ...grouped.complete,
+            ];
+            setPlotData({ ...grouped, all: allPlots });
           } else {
-            console.error("Unexpected data format:", res.data);
-            setError("Invalid data format received");
-            setPlots([]);
+            console.warn('Unexpected plots API response:', res.data);
+            setPlotData({ all: [], available: [], booked: [], hold: [], complete: [] });
           }
         })
-        .catch(err => {
-          console.error("Error loading data from backend:", err);
-          console.error("Request details:", {
-            url: `http://localhost:5000/api/properties/${cleanPropertyId}/plots`,
-            propertyId: cleanPropertyId,
-            status: err.response?.status,
-            data: err.response?.data
-          });
-          
-          if (err.response?.status === 404) {
-            setError("Property not found or has no plots");
-          } else if (err.response?.status === 400) {
-            setError("Invalid property ID format");
-          } else {
-            setError("Failed to load plots data");
-          }
-          setPlots([]);
-        })
-        .finally(() => {
-          setLoading(false);
+        .catch((err) => {
+          console.error('Error fetching plots:', err);
+          setPlotData({ all: [], available: [], booked: [], hold: [], complete: [] });
         });
     }
-  }, [isOpen, propertyId]);
+  }, [property]);
 
-  const openBookingPopup = (plot) => {
-    setSelectedPlot(plot);
-    setIsBookingPopupOpen(true);
+  if (!isOpen || !property) return null;
+
+  const handleBookClick = (plot) => {
+    setBookingData(plot);
   };
 
-  const closeBookingPopup = () => {
-    setSelectedPlot(null);
-    setIsBookingPopupOpen(false);
+  const handleBookingClose = () => {
+    setBookingData(null);
   };
 
-  const filterPlots = (status) => plots.filter(plot => plot.status?.toLowerCase() === status);
-
-  const availablePlots = plots.filter(plot => 
-    !['booked', 'hold', 'complete'].includes(plot.status?.toLowerCase())
-  );
-
-  if (!isOpen) return null;
+  const safeRender = (value) => {
+    if (!value) return '';
+    if (typeof value === 'object') {
+      try {
+        return Object.values(value).filter(Boolean).join(', ');
+      } catch {
+        return '';
+      }
+    }
+    return value;
+  };
 
   return (
-    <div className="view-property-overlay" onClick={onClose}>
-      <div className="view-property-popup" onClick={e => e.stopPropagation()}>
-        <div className="view-property-header">
-          <h2 className="view-property-title">{propertyName || 'Property Details'}</h2>
-          <button className="close-btn" onClick={onClose}>×</button>
-        </div>
-        
-        <div className="tab-content">
-          {loading ? (
-            <div className="loading-container">
-              <div className="spinner"></div>
-              <p>Loading plots...</p>
+    <div className="popup-overlay">
+      <div className="popup-content">
+        {/* Header */}
+        <div className="popup-header">
+          <button className="popup-close-btn" onClick={onClose}>
+            <X size={24} />
+          </button>
+          <div className="popup-header-content">
+            <h2 className="popup-title">{safeRender(property.name)}</h2>
+            <div className="popup-meta">
+              <div className="meta-item"><MapPin size={16} /> {safeRender(property.address)}</div>
+              <div className="meta-item"><Tag size={16} /> {safeRender(property.rera_number)}</div>
+              <div className="meta-item"><IndianRupee size={16} /> {safeRender(property.rate)}</div>
+              <div className="meta-item"><Home size={16} /> {safeRender(property.total_plots)}</div>
+              <div className="meta-item"><Clock size={16} /> {safeRender(property.specification)}</div>
+              <div className="meta-item"><CheckCircle size={16} /> {safeRender(property.description)}</div>
+              <div className="meta-item"><Compass size={16} />
+                <a className="info-link" href={safeRender(property.map_url)} target="_blank" rel="noopener noreferrer">
+                  View Map
+                </a>
+              </div>
             </div>
-          ) : error ? (
-            <div className="error-container">
-              <p>Error: {error}</p>
-              <button onClick={() => window.location.reload()}>Retry</button>
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div className="status-tabs-container">
+          <div className="status-tabs">
+            {Object.entries(statusConfig).map(([status, config]) => (
+              <button
+                key={status}
+                className={`status-tab ${selectedStatus === status ? 'active' : ''}`}
+                onClick={() => setSelectedStatus(status)}
+              >
+                {config.label}
+                <span className={`tab-count ${config.countClass}`}>
+                  {plotData[status]?.length || 0}
+                </span>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Plots List */}
+        <div className="plots-content">
+          {plotData[selectedStatus]?.length > 0 ? (
+            <div className="plots-grid">
+              {plotData[selectedStatus].map((plot, index) => (
+                <div
+                  key={plot._id || `${selectedStatus}-${index}`}
+                  className={`plot-card ${plot.status?.toLowerCase() || 'available'}`}
+                >
+                  <Square size={16} /> {safeRender(plot.plot_number)}
+                  {plot.status?.toLowerCase() === 'available' && (
+                    <button className="book-btn" onClick={() => handleBookClick(plot)}>Book</button>
+                  )}
+                </div>
+              ))}
             </div>
           ) : (
-            <>
-              <div className="section-header">Plot Summary</div>
-              <div className="plots-summary">
-                <div className="plot-row">
-                  <span className="plot-number">Total Plots:</span>
-                  <span>{plots.length}</span>
-                </div>
-                <div className="plot-row">
-                  <span className="plot-number">Available:</span>
-                  <span className="status-box available-box">{availablePlots.length}</span>
-                </div>
-                <div className="plot-row">
-                  <span className="plot-number">Booked:</span>
-                  <span className="status-box booked-box">{filterPlots('booked').length}</span>
-                </div>
-                <div className="plot-row">
-                  <span className="plot-number">On Hold:</span>
-                  <span className="status-box hold-box">{filterPlots('hold').length}</span>
-                </div>
-                <div className="plot-row">
-                  <span className="plot-number">Complete:</span>
-                  <span className="status-box complete-box">{filterPlots('complete').length}</span>
-                </div>
-              </div>
-              
-              <div className="section-header">Plot Details</div>
-              {plots.length > 0 ? (
-                <div className="plots-list">
-                  {plots.map((plot, index) => (
-                    <div key={plot.id || index} className="plot-row">
-                      <div className="plot-info">
-                        <span className="plot-number">Plot {plot.number || index + 1}</span>
-                        {plot.size && <span className="plot-details"> - {plot.size}</span>}
-                        {plot.price && <span className="plot-details"> - ₹{plot.price}</span>}
-                        {plot.facing && <span className="plot-details"> - {plot.facing}</span>}
-                      </div>
-                      
-                      <div className="plot-actions">
-                        <span className={`status-box ${plot.status?.toLowerCase() || 'unknown'}-box`}>
-                          {plot.status || 'Unknown'}
-                        </span>
-                        
-                        {availablePlots.includes(plot) && (
-                          <button 
-                            className="book-btn"
-                            onClick={() => openBookingPopup(plot)}
-                          >
-                            Book
-                          </button>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="empty-state">
-                  No plots available for this property.
-                </div>
-              )}
-            </>
+            <div className="empty-state">
+              <p className="empty-text">No plots found for {statusConfig[selectedStatus].label}</p>
+            </div>
           )}
         </div>
 
-        <div className="view-property-footer">
-          <button className="close-popup-btn" onClick={onClose}>
-            Close
-          </button>
-        </div>
-
-        {/* Booking Popup for individual plot */}
-        {isBookingPopupOpen && selectedPlot && (
+        {/* Booking Popup */}
+        {bookingData && (
           <BookingPopup
-            isOpen={isBookingPopupOpen}
-            onClose={closeBookingPopup}
-            plot={selectedPlot}
-            propertyName={propertyName}
+            plot={bookingData}
+            property={property}
+            onClose={handleBookingClose}
           />
         )}
       </div>

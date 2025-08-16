@@ -1,18 +1,41 @@
 [
   {
-    "_id": "c001",
-    "name": "Amit Sharma",
+    "_id": "E001",
+    "userid": "sandeep001",
+    "password": "passSandeep123",
+    "name": "Sandeep Meena",
+    "aadhar_number": "7890-1234-5678",
+    "account_number": "100200300456",
+    "rera_number": "RAJ2025EMP001",
+    "total_sales": 5,
+    "superior_name": "Anil Rathore",
+    "photo_url": "https://yourdomain.com/images/sandeep.jpg",
+    "ongoing_work": []
+  },
+  {
+    "_id": "E002",
+    "userid": "harshit001",
+    "password": "passHarshit123",
+    "name": "Harshit Kumawat",
     "aadhar_number": "1234-5678-9012",
-    "phone_number": "9876543210",
-    "project_id": "68864aa2a3c55c813f55dc51",
-    "plot_number": 21,
-    "payment": {
-      "cash": 300000,
-      "cheque": 200000,
-      "total": 500000,
-      "remaining": 100000
-    },
-    "status": "ongoing",
-    "saled_by": "E001"
+    "account_number": "200300400567",
+    "rera_number": "RAJ2025EMP002",
+    "total_sales": 3,
+    "superior_name": "Sandeep Meena",
+    "photo_url": "https://yourdomain.com/images/harshit.jpg",
+    "ongoing_work": []
+  },
+  {
+    "_id": "E003",
+    "userid": "shantanu001",
+    "password": "passShantanu123",
+    "name": "Shantanu Sharma",
+    "aadhar_number": "4567-8901-2345",
+    "account_number": "300400500678",
+    "rera_number": "RAJ2025EMP003",
+    "total_sales": 2,
+    "superior_name": "Harshit Kumawat",
+    "photo_url": "https://yourdomain.com/images/shantanu.jpg",
+    "ongoing_work": []
   }
 ]

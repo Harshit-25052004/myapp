@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './BookingPopup.css';
 
-export default function BookingPopup({ isOpen, onClose, propertyName, propertyId, plotNumber }) {
+export default function BookingPopup({ isOpen, onClose, property }) {
   const [formData, setFormData] = useState({
     clientName: '',
     clientPhone: '',
     aadharNumber: '',
     panNumber: '',
-    plotNumber: plotNumber || '',
+    plotNumber: property?.plotNumber || '',
   });
 
   const handleChange = (e) => {
@@ -25,14 +25,16 @@ export default function BookingPopup({ isOpen, onClose, propertyName, propertyId
     try {
       const bookingData = {
         ...formData,
-        propertyName,
-        propertyId,
+        propertyName: property?.name,
+        propertyId: property?._id,
         date: new Date().toISOString(),
       };
 
-      await axios.post('http://localhost:5000/api/clients/', bookingData, {
-        headers: { 'Content-Type': 'application/json' },
-      });
+      await axios.post("http://localhost:5000/api/clients",
+      JSON.stringify(bookingData), // explicitly serialize
+      { headers: { "Content-Type": "application/json" } }
+);
+
 
       alert('Booking successful!');
       onClose(); // Close popup
@@ -55,7 +57,7 @@ export default function BookingPopup({ isOpen, onClose, propertyName, propertyId
         </div>
 
         <div className="property-name-display">
-          <h3>{propertyName}</h3>
+          <h3>{property.name}</h3>
         </div>
 
         <form className="booking-form" onSubmit={handleSubmit}>

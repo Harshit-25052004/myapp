@@ -2,6 +2,7 @@
   min-height: 100vh;
   background-color: #f8f9fa;
   padding-top: 2rem;
+  
 }
 
 .page-title {
@@ -153,6 +154,7 @@
     grid-template-columns: 1fr;
     gap: 1rem;
     padding: 0 1rem;
+    text-decoration: none;
   }
   
   .property-name-card {
