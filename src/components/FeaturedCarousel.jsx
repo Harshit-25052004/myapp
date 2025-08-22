@@ -19,7 +19,7 @@ export default function FeaturedCarousel() {
 
   useEffect(() => {
     setLoading(true);
-    axios.get('http://localhost:5000/api/properties')
+    axios.get('http://localhost:5001/api/properties')
       .then(res => {
         console.log("Fetched properties:", res.data);
         if (Array.isArray(res.data)) {

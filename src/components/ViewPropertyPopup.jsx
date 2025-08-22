@@ -25,7 +25,7 @@ export default function ViewPropertyPopup({ isOpen, onClose, property }) {
   useEffect(() => {
     if (property?._id) {
       axios
-        .get(`http://localhost:5000/api/properties/${property._id}/plots`)
+        .get(`http://localhost:5001/api/properties/${property._id}/plots`)
         .then((res) => {
           if (res.data && res.data.plots) {
             const grouped = res.data.plots;

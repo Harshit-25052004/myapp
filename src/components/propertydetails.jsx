@@ -30,7 +30,7 @@ const PropertyDetail = () => {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:5000/api/properties/${id}`)
+      .get(`http://localhost:5001/api/properties/${id}`)
       .then((res) => {
         setProperty(res.data);
         setLoading(false);

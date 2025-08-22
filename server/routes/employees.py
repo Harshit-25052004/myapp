@@ -1,21 +1,21 @@
 from flask import Blueprint, request, jsonify
-from werkzeug.security import check_password_hash  # if using hashed passwords
 
 def employees_bp(db):
     bp = Blueprint('employees', __name__)
 
+    # ✅ Get all employees
     @bp.route('/', methods=['GET'])
     def get_employees():
         employees = list(db.employees.find({}, {'_id': 0}))
         return jsonify(employees)
 
+    # ✅ Login
     @bp.route('/login', methods=['POST'])
     def login():
         if not request.is_json:
             return jsonify({"success": False, "error": "Content-Type must be application/json"}), 415
 
         data = request.get_json()
-
         userid = data.get('userid')
         password = data.get('password')
 
@@ -28,17 +28,24 @@ def employees_bp(db):
         if not user:
             return jsonify({"success": False, "error": "User not found"}), 401
 
-        # If using plain text passwords (not recommended):
-        # if user['password'] != password:
-        #     return jsonify({"success": False, "error": "Invalid password"}), 401
-
-        # If using hashed passwords:
-        if not check_password_hash(user['password'], password):
+        # ✅ Plain text password check
+        if user['password'] != password:
             return jsonify({"success": False, "error": "Invalid password"}), 401
 
         # Remove password before sending user object
         user.pop('password', None)
 
         return jsonify({"success": True, "user": user}), 200
+
+    # ✅ Get single employee by userid
+    @bp.route('/<userid>', methods=['GET'])
+    def get_employee(userid):
+        employee = db.employees.find_one({"userid": userid}, {'_id': 0})
+        if not employee:
+            return jsonify({"error": "Employee not found"}), 404
+
+        # Remove password if exists
+        employee.pop('password', None)
+        return jsonify(employee), 200
 
     return bp

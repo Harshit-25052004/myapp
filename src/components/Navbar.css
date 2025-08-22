@@ -14,20 +14,39 @@
 
 /* Solid background on scroll */
 .navbar.scrolled {
-  background: rgba(255, 255, 255, 0.95);
+  background: #0B3C6E;
   backdrop-filter: blur(8px);
-  
+}
+
+/* Ensure text turns white when scrolled */
+.navbar.scrolled .navbar-button,
+.navbar.scrolled .login-button,
+.navbar.scrolled .user-button {
+  color: white !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.navbar.scrolled .navbar-button:hover,
+.navbar.scrolled .login-button:hover,
+.navbar.scrolled .user-button:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+}
+
+/* Logo styles when scrolled */
+.navbar.scrolled .navbar-logo h1 {
+  color: white !important;
+}
+
+.navbar.scrolled .navbar-logo h1 span {
+  color: #d4af37 !important; /* Golden Housing */
 }
 
 /* Always solid background for property details page */
 .navbar.property-details {
-  
   backdrop-filter: blur(8px);
   mix-blend-mode: multiply;
-
-  
 }
-
 
 .navbar-container {
   max-width: 1280px;
@@ -62,6 +81,7 @@
 
 .navbar-logo {
   flex-shrink: 0;
+  margin-left: 0.5rem;   /* ⬅️ reduced left margin */
 }
 
 .navbar-logo h1 {
@@ -90,6 +110,7 @@
   display: none;
   align-items: center;
   gap: 2rem;
+  margin-right: 0.5rem;  /* ⬅️ reduced right margin for login/user */
 }
 
 @media (min-width: 768px) {
@@ -253,7 +274,6 @@
   background: #fee2e2;
   color: #dc2626;
 }
-
 
 .dropdown-header {
   display: flex;

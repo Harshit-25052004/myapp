@@ -1,272 +1,124 @@
-import { useState, useEffect } from 'react';
-import { X, User, Calendar, TrendingUp, Mail, Phone, MapPin, Briefcase } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
-import './EmployeeDetails.css';
+import React, { useEffect, useState } from "react";
+import {
+  User,
+  Briefcase,
+  Settings,
+  X,
+  Loader2,
+} from "lucide-react";
+import "./EmployeeDetails.css";
 
-export default function EmployeeDetailsModal({ isOpen, onClose, employeeId }) {
-  console.log("into employee details");
-  const { user } = useAuth();
+const EmployeeDetailsModal = ({onClose, employeeId }) => {
   const [employeeData, setEmployeeData] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    if (isOpen && employeeId) {
-      fetchEmployeeData(employeeId);
-    }
-  }, [isOpen, employeeId]);
-
-  const fetchEmployeeData = async (id) => {
+  const fetchEmployeeData = async (employeeId) => {
     setLoading(true);
     setError(null);
 
     try {
-      const res = await fetch(`http://localhost:5000/api/employees`);
-      if (!res.ok) throw new Error('Failed to fetch employee details');
-      const data = await res.json();
+      const res = await fetch(`http://localhost:5001/api/employees/${employeeId}`);
+      if (!res.ok) throw new Error("Failed to fetch employee details");
+      const employee = await res.json();
 
+      // Map backend fields to frontend
       setEmployeeData({
-        id: data._id,
-        name: data.name,
-        aadharNumber: data.aadhar_number,
-        accountNumber: data.account_number,
-        reraNumber: data.rera_number,
-        totalSales: data.total_sales,
-        superiorName: data.superior_name,
-        photoUrl: data.photo_url,
-        joinDate: data.join_date || new Date().toISOString(),
-        status: data.status || 'Active',
-        ongoingWork: data.ongoing_work || [],
-        performance: data.performance || null,
-        department: data.department || 'N/A'
+        id: employee.userid,
+        name: employee.name,
+        aadharNumber: employee.aadhar_number,
+        accountNumber: employee.account_number,
+        reraNumber: employee.rera_number,
+        totalSales: employee.total_sales,
+        superiorName: employee.superior_name,
+        photoUrl: employee.photo_url,
+        joinDate: employee.join_date || new Date().toISOString(),
+        status: employee.status || "Active",
+        ongoingWork: employee.ongoing_work || [],
+        performance: employee.performance || null,
+        department: employee.department || "N/A",
+        email: employee.email || null,
       });
-
     } catch (err) {
-      console.error('Error fetching employee data:', err);
-      setError(err.message || 'Failed to load employee details');
+      console.error("Error fetching employee data:", err);
+      setError(err.message || "Failed to load employee details");
     } finally {
       setLoading(false);
     }
   };
 
-  const formatDate = (dateString) =>
-    new Date(dateString).toLocaleDateString('en-IN', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-
-  const getStatusColor = (status) => {
-    switch (status.toLowerCase()) {
-      case 'active': return '#22c55e';
-      case 'inactive': return '#ef4444';
-      case 'on leave': return '#f59e0b';
-      default: return '#6b7280';
+  useEffect(() => {
+    if ( employeeId) {
+      console.log("Fetching employee:", employeeId);
+      fetchEmployeeData(employeeId);
     }
-  };
+  }, [employeeId]);
 
-  const getRatingStars = (rating) => {
-    if (!rating) return '';
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-    for (let i = 0; i < fullStars; i++) stars.push('★');
-    if (hasHalfStar) stars.push('☆');
-    return stars.join('');
-  };
-
-  if (!isOpen) return null;
+  
 
   return (
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="employee-details-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <h2 className="modal-title">
-            <User size={24} />
-            Employee Details
-          </h2>
-          <button className="close-btn" onClick={onClose}>
-            <X size={24} />
-          </button>
-        </div>
+    <div className="employee-modal-overlay">
+      <div className="employee-modal">
+        <button className="close-btn" onClick={onClose}>
+          <X size={20} />
+        </button>
 
-        {loading && (
-          <div className="loading-section">
-            <div className="spinner"></div>
-            <p>Loading employee details...</p>
+        {loading ? (
+          <div className="loading">
+            <Loader2 className="spin" size={32} /> Loading employee details...
           </div>
-        )}
-
-        {error && (
-          <div className="error-section">
-            <p className="error-message">❌ {error}</p>
-            <button onClick={() => fetchEmployeeData(employeeId)} className="retry-btn">
-              Try Again
-            </button>
-          </div>
-        )}
-
-        {employeeData && !loading && !error && (
-          <div className="modal-content">
-            {/* Profile Header */}
-            <div className="profile-header">
-              <div className="profile-avatar">
-                {employeeData.photoUrl ? (
-                  <img src={employeeData.photoUrl} alt={employeeData.name} />
-                ) : (
-                  <div className="avatar-placeholder">
-                    {employeeData.name.charAt(0).toUpperCase()}
-                  </div>
-                )}
-              </div>
-              <div className="profile-info">
-                <h3 className="employee-name">{employeeData.name}</h3>
-                <p className="employee-title">{employeeData.department}</p>
-                <div
-                  className="status-badge"
-                  style={{ backgroundColor: getStatusColor(employeeData.status) }}
-                >
-                  {employeeData.status}
-                </div>
-              </div>
+        ) : error ? (
+          <div className="error">{error}</div>
+        ) : employeeData ? (
+          <div className="employee-details">
+            <div className="employee-header">
+              <img
+                src={employeeData.photoUrl || "/default-avatar.png"}
+                alt={employeeData.name}
+                className="employee-photo"
+              />
+              <h2>{employeeData.name}</h2>
+              <p>{employeeData.department}</p>
             </div>
 
-            {/* Details Grid */}
-            <div className="details-grid">
-              {/* Personal Info */}
-              <div className="detail-section">
-                <h4 className="section-title">
-                  <User size={18} /> Personal Information
-                </h4>
-                <div className="detail-items">
-                  <div className="detail-item">
-                    <span className="detail-label">Employee ID:</span>
-                    <span className="detail-value">{employeeData.id}</span>
-                  </div>
-                  <div className="detail-item">
-                    <span className="detail-label">RERA Number:</span>
-                    <span className="detail-value">{employeeData.reraNumber}</span>
-                  </div>
-                  <div className="detail-item">
-                    <span className="detail-label">Aadhar Number:</span>
-                    <span className="detail-value">{employeeData.aadharNumber}</span>
-                  </div>
-                  <div className="detail-item">
-                    <span className="detail-label">Account Number:</span>
-                    <span className="detail-value">{employeeData.accountNumber}</span>
-                  </div>
-                </div>
-              </div>
+            <div className="employee-info">
+              <p><strong>User ID:</strong> {employeeData.id}</p>
+              <p><strong>Email:</strong> {employeeData.email || "N/A"}</p>
+              <p><strong>Aadhar No:</strong> {employeeData.aadharNumber}</p>
+              <p><strong>Account No:</strong> {employeeData.accountNumber}</p>
+              <p><strong>RERA No:</strong> {employeeData.reraNumber}</p>
+              <p><strong>Join Date:</strong> {new Date(employeeData.joinDate).toLocaleDateString()}</p>
+              <p><strong>Status:</strong> {employeeData.status}</p>
+              <p><strong>Total Sales:</strong> {employeeData.totalSales}</p>
+              <p><strong>Superior:</strong> {employeeData.superiorName}</p>
+            </div>
 
-              {/* Work Info */}
-              <div className="detail-section">
-                <h4 className="section-title">
-                  <Briefcase size={18} /> Work Information
-                </h4>
-                <div className="detail-items">
-                  <div className="detail-item">
-                    <span className="detail-label">Superior:</span>
-                    <span className="detail-value">{employeeData.superiorName}</span>
-                  </div>
-                  <div className="detail-item">
-                    <span className="detail-label">Total Sales:</span>
-                    <span className="detail-value highlight">{employeeData.totalSales}</span>
-                  </div>
-                  <div className="detail-item">
-                    <span className="detail-label">Join Date:</span>
-                    <span className="detail-value">{formatDate(employeeData.joinDate)}</span>
-                  </div>
-                  <div className="detail-item">
-                    <span className="detail-label">Active Tasks:</span>
-                    <span className="detail-value">{employeeData.ongoingWork.length}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Performance */}
-              {employeeData.performance && (
-                <div className="detail-section performance-section">
-                  <h4 className="section-title">
-                    <TrendingUp size={18} /> Performance Metrics
-                  </h4>
-                  <div className="performance-grid">
-                    <div className="performance-item">
-                      <div className="performance-value">
-                        {employeeData.performance.completionRate}%
-                      </div>
-                      <div className="performance-label">Completion Rate</div>
-                    </div>
-                    <div className="performance-item">
-                      <div className="performance-value">
-                        {getRatingStars(employeeData.performance.customerRating)} 
-                        <span className="rating-number">
-                          {employeeData.performance.customerRating}/5
-                        </span>
-                      </div>
-                      <div className="performance-label">Customer Rating</div>
-                    </div>
-                    <div className="performance-item">
-                      <div className="performance-value">
-                        {employeeData.performance.monthlyAchieved}/{employeeData.performance.monthlyTarget}
-                      </div>
-                      <div className="performance-label">Monthly Target</div>
-                    </div>
-                    <div className="performance-item">
-                      <div className="performance-value">
-                        {employeeData.performance.ongoingProjects}
-                      </div>
-                      <div className="performance-label">Active Projects</div>
-                    </div>
-                  </div>
-                </div>
+            <div className="employee-extra">
+              <h3>Ongoing Work</h3>
+              {employeeData.ongoingWork.length > 0 ? (
+                <ul>
+                  {employeeData.ongoingWork.map((task, index) => (
+                    <li key={index}>{task}</li>
+                  ))}
+                </ul>
+              ) : (
+                <p>No ongoing work assigned.</p>
               )}
-
-              {/* Ongoing Work */}
-              <div className="detail-section ongoing-work-section">
-                <h4 className="section-title">
-                  <Calendar size={18} /> Current Tasks
-                </h4>
-                {employeeData.ongoingWork.length > 0 ? (
-                  <div className="work-list">
-                    {employeeData.ongoingWork.map((work, index) => (
-                      <div key={index} className="work-item">
-                        <div className="work-bullet"></div>
-                        <span className="work-text">
-                          {typeof work === 'string' ? work : work.taskName || 'Untitled Task'}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="no-work">No active tasks assigned</p>
-                )}
-              </div>
             </div>
 
-            {/* Contact Info */}
-            <div className="contact-section">
-              <h4 className="section-title">
-                <Phone size={18} /> Contact Information
-              </h4>
-              <div className="contact-info">
-                <div className="contact-item">
-                  <Mail size={16} /> <span>{user?.email || 'Not provided'}</span>
-                </div>
-                <div className="contact-item">
-                  <Phone size={16} /> <span>+91 98765 43210</span>
-                </div>
-                <div className="contact-item">
-                  <MapPin size={16} /> <span>Mumbai, Maharashtra</span>
-                </div>
+            {employeeData.performance && (
+              <div className="employee-performance">
+                <h3>Performance</h3>
+                <p>{employeeData.performance}</p>
               </div>
-            </div>
+            )}
           </div>
+        ) : (
+          <p>No data available</p>
         )}
-
-        <div className="modal-footer">
-          <button className="close-button" onClick={onClose}>Close</button>
-        </div>
       </div>
     </div>
   );
-}
+};
+
+export default EmployeeDetailsModal;

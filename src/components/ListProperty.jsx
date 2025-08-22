@@ -6,7 +6,7 @@ export default function ListProperty() {
   const [properties, setProperties] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/properties') // Flask endpoint
+    fetch('http://localhost:5001/api/properties') // Flask endpoint
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch properties");
         return res.json();

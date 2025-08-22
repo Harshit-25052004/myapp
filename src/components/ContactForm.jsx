@@ -22,7 +22,7 @@ const ContactForm = ({property}) => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/api/clients", {
+      const response = await fetch("http://localhost:5001/api/clients", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +69,7 @@ const ContactForm = ({property}) => {
       {/* Price & Contact Buttons */}
       <div className="price-section">
         <div className="price-amount">
-          ${property?.price} 
+        price = ${property?.price}
         </div>
         <div className="contact-buttons">
           <button className="phone-btn" onClick={handlePhone}>

@@ -30,7 +30,7 @@ export default function BookingPopup({ isOpen, onClose, property }) {
         date: new Date().toISOString(),
       };
 
-      await axios.post("http://localhost:5000/api/clients",
+      await axios.post("http://localhost:5001/api/clients",
       JSON.stringify(bookingData), // explicitly serialize
       { headers: { "Content-Type": "application/json" } }
 );

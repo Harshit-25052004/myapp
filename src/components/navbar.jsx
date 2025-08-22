@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import './Navbar.css';
 import MenuComponent from './Menu';
-import EmployeeDetailsModal from './EmployeeDetails'; // Import your modal
+import EmployeeDetailsModal from './EmployeeDetails'; 
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
@@ -24,43 +24,28 @@ export default function Navbar() {
   const { user, logout, isAuthenticated } = useAuth();
   const location = useLocation();
 
-  // Detect if we are on the property details page
   const isPropertyDetailPage = location.pathname.startsWith('/property/');
 
-  // Handle scroll effect
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     if (!isPropertyDetailPage) {
       window.addEventListener('scroll', handleScroll);
     }
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, [isPropertyDetailPage]);
 
-  // Close user menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (showUserMenu && !event.target.closest('.user-menu-container')) {
         setShowUserMenu(false);
       }
     };
-
     document.addEventListener('click', handleClickOutside);
     return () => document.removeEventListener('click', handleClickOutside);
   }, [showUserMenu]);
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
-  };
-
-  const toggleUserMenu = () => {
-    setShowUserMenu(!showUserMenu);
-  };
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  const toggleUserMenu = () => setShowUserMenu(!showUserMenu);
 
   const handleLogout = () => {
     logout();
@@ -86,44 +71,26 @@ export default function Navbar() {
     setShowUserMenu(false);
   };
 
-  // Always solid background + black text on property detail page
-  const navStyleClass = isPropertyDetailPage
-    ? 'scrolled'
-    : isScrolled
-    ? 'scrolled'
-    : 'transparent';
-
-  const textColorClass = isPropertyDetailPage
-    ? 'dark'
-    : isScrolled
-    ? 'dark'
-    : 'white';
+  const navStyleClass = isPropertyDetailPage ? 'scrolled' : isScrolled ? 'scrolled' : 'transparent';
+  const textColorClass = isPropertyDetailPage ? 'dark' : isScrolled ? 'dark' : 'white';
 
   return (
     <>
       <nav className={`navbar ${navStyleClass}`}>
         <div className="navbar-container">
           <div className="navbar-content">
-            {/* Logo */}
             <div className="navbar-logo">
               <h1 className={textColorClass}>
                 Haveli<span>Housing</span>
               </h1>
             </div>
 
-            {/* Desktop Navigation */}
             <div className="navbar-desktop">
-              <Link
-                to="/list-property"
-                className={`navbar-button ${textColorClass}`}
-              >
+              <Link to="/list-property" className={`navbar-button ${textColorClass}`}>
                 LIST OF PROPERTY
               </Link>
 
-              <button
-                className={`navbar-button ${textColorClass}`}
-                onClick={toggleMenu}
-              >
+              <button className={`navbar-button ${textColorClass}`} onClick={toggleMenu}>
                 {isMenuOpen ? <X className="menu-icon" /> : <Menu className="menu-icon" />}
               </button>
 
@@ -155,20 +122,12 @@ export default function Navbar() {
 
                       <div className="dropdown-separator"></div>
 
-                      <button
-                        className="user-dropdown-item"
-                        onClick={handleDisplayDetails}
-                      >
+                      <button className="user-dropdown-item" onClick={handleDisplayDetails}>
                         <UserCheck size={16} />
-                       
-                        <span> Details</span>
-                        
+                        <span>Details</span>
                       </button>
 
-                      <button
-                        className="user-dropdown-item"
-                        onClick={handleOngoingWork}
-                      >
+                      <button className="user-dropdown-item" onClick={handleOngoingWork}>
                         <Briefcase size={16} />
                         <span>Ongoing Work</span>
                       </button>
@@ -180,10 +139,7 @@ export default function Navbar() {
 
                       <div className="dropdown-separator"></div>
 
-                      <button
-                        className="user-dropdown-item logout-item"
-                        onClick={handleLogout}
-                      >
+                      <button className="user-dropdown-item logout-item" onClick={handleLogout}>
                         <LogOut size={16} />
                         <span>Logout</span>
                       </button>
@@ -198,12 +154,8 @@ export default function Navbar() {
               )}
             </div>
 
-            {/* Mobile Navigation */}
             <div className="navbar-mobile">
-              <button
-                className={`navbar-button ${textColorClass}`}
-                onClick={toggleMenu}
-              >
+              <button className={`navbar-button ${textColorClass}`} onClick={toggleMenu}>
                 {isMenuOpen ? <X className="menu-icon" /> : <Menu className="menu-icon" />}
               </button>
             </div>
@@ -213,11 +165,10 @@ export default function Navbar() {
         <MenuComponent isOpen={isMenuOpen} onClose={toggleMenu} />
       </nav>
 
-      {/* Employee Details Modal */}
       {showEmployeeDetailsModal && (
         <EmployeeDetailsModal
-           employeeId={user?.id}
-          onClose={() => setShowEmployeeDetailsModal(true)}
+          employeeId={user?._id} // ✅ fallback in case backend uses `id`
+          onClose={() => setShowEmployeeDetailsModal(false)} // ✅ fixed close
         />
       )}
     </>

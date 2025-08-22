@@ -24,7 +24,7 @@ export default function HomePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/properties")
+    fetch("http://localhost:5001/api/properties")
       .then((res) => res.json())
       .then((data) => {
         setCollections(data);
