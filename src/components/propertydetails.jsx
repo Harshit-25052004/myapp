@@ -3,29 +3,33 @@ import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import Navbar from '../components/navbar';
 import Contact from './ContactForm';
-import Footer from './footer'
+import Footer from './footer';
 import './propertydetails.css';
 
 const PropertyDetail = () => {
   const { id } = useParams();
   const [property, setProperty] = useState(null);
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Force navbar to be non-transparent on this page
+  // Navbar transparency on scroll
   useEffect(() => {
     const navbar = document.querySelector('.navbar');
-    if (navbar) {
-      navbar.classList.remove('transparent');
-      navbar.classList.add('scrolled');
-    }
-    return () => {
-      if (navbar) {
+
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        navbar.classList.add('scrolled');
+        navbar.classList.remove('transparent');
+      } else {
         navbar.classList.remove('scrolled');
-        navbar.classList.add('transparent');
+        navbar.classList.add('transparent'); // White before scroll
       }
     };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // run on load
+
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   useEffect(() => {
@@ -78,10 +82,15 @@ const PropertyDetail = () => {
     window.open(whatsappUrl, '_blank');
   };
 
+  // Prepare images for the grid display
+  const imageList = property.images && property.images.length > 0 ? property.images : [property.img];
+  const mainImage = imageList[0] || 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80';
+  const secondaryImage1 = imageList[1];
+  const secondaryImage2 = imageList[2];
+
   return (
     <div className="property-detail-page">
       <Navbar />
-      <Contact property={property} />
 
       {/* Breadcrumb */}
       <div className="breadcrumb-container">
@@ -96,8 +105,11 @@ const PropertyDetail = () => {
         </div>
       </div>
 
-      <div className="complete-box">
-        <div className="property-detail-container">
+      {/* Two-column layout */}
+      <div className="property-detail-container">
+
+        {/* Left side */}
+        <div className="complete-box">
           <div className="property-content">
 
             {/* Property Header */}
@@ -116,31 +128,21 @@ const PropertyDetail = () => {
               </div>
             </div>
 
-            {/* Property Images */}
-            <div className="property-images">
-              <div className="main-image">
-                <img
-                  src={
-                    (property.images && property.images[selectedImageIndex]) ||
-                    property.img ||
-                    'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80'
-                  }
-                  alt={property.name}
-                  className="featured-image"
-                />
+            {/* Property Images Grid */}
+            <div className="property-images-grid">
+              <div className="main-image-container">
+                <img src={mainImage} alt={property.name} className="main-grid-image" />
               </div>
-              <div className="image-thumbnails">
-                {(property.images || [property.img]).map((img, index) => (
-                  <img
-                    key={index}
-                    src={img}
-                    alt={`Property view ${index + 1}`}
-                    className={`thumbnail ${index === selectedImageIndex ? 'active' : ''}`}
-                    onClick={() => setSelectedImageIndex(index)}
-                  />
-                ))}
+              <div className="secondary-images-container">
+                {secondaryImage1 && (
+                  <img src={secondaryImage1} alt={`${property.name} - view 2`} className="secondary-grid-image" />
+                )}
+                {secondaryImage2 && (
+                  <img src={secondaryImage2} alt={`${property.name} - view 3`} className="secondary-grid-image" />
+                )}
               </div>
             </div>
+
 
             <p><strong>Property RERA Number:</strong> {property.rera_number}</p>
 
@@ -148,8 +150,6 @@ const PropertyDetail = () => {
             <p>
               Haveli Housing is proud to present this premium residential project,
               offering spacious plots and modern living spaces in a well-planned gated community.
-              Designed to combine comfort, elegance, and convenience, this development provides
-              an ideal setting for families and investors seeking quality living in a prime location.
             </p>
 
             {/* Property Description */}
@@ -181,10 +181,7 @@ const PropertyDetail = () => {
                 This premium property offers a perfect blend of comfort and style,
                 featuring spacious interiors, modern design, and eco-friendly features.
                 Residents can enjoy landscaped outdoor spaces, ample natural light,
-                and premium finishes throughout. The community provides top-notch
-                amenities including a swimming pool, gym, and security services,
-                making it an ideal choice for families and professionals.
-                Perfectly located, it ensures convenience without compromising on luxury.
+                and premium finishes throughout.
               </p>
 
               {/* Contact Info */}
@@ -195,11 +192,68 @@ const PropertyDetail = () => {
                 <p>(Harshit, Shantanu)</p>
               </div>
             </div>
+             {/* NEW: Property Details Section */}
+            <div className="property-details-section">
+              <h2 className="section-title">DETAILS</h2>
+              <div className="details-grid">
+                <div className="detail-item total-plots">
+                  <div className="detail-icon"></div>
+                  <div className="detail-label-value-container">
+                    <span className="detail-label">Total Plots</span>
+                    <span className="detail-value">{property.total_plots || 'N/A'}</span>
+                  </div>
+                </div>
+                <div className="detail-item rera-number">
+                  <div className="detail-icon"></div>
+                  <div className="detail-label-value-container">
+                    <span className="detail-label">RERA Number</span>
+                    <span className="detail-value">{property.rera_number || 'N/A'}</span>
+                  </div>
+                </div>
+                <div className="detail-item rate">
+                  <div className="detail-icon"></div>
+                  <div className="detail-label-value-container">
+                    <span className="detail-label">Rate</span>
+                    <span className="detail-value">{property.rate ? `₹${property.rate.toLocaleString()} / sq ft` : 'N/A'}</span>
+                  </div>
+                </div>
+                <div className="detail-item specification">
+                  <div className="detail-icon"></div>
+                  <div className="detail-label-value-container">
+                    <span className="detail-label">Specification</span>
+                    <span className="detail-value">{property.specification || 'N/A'}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* NEW: Location Section */}
+            <div className="property-location-section">
+                <h2 className="section-title">LOCATION</h2>
+                <div className="map-wrapper">
+                    <iframe
+                        src={property.map_url}
+                        width="100%"
+                        height="450"
+                        style={{ border: 0 }}
+                        allowFullScreen=""
+                        loading="lazy"
+                        referrerPolicy="no-referrer-when-downgrade"
+                        title={`${property.name} Location Map`}
+                    ></iframe>
+                </div>
+            </div>
+
 
           </div>
         </div>
+
+        {/* Right side - Contact form */}
+        <Contact property={property} />
+
       </div>
-      <Footer/>
+
+      <Footer />
     </div>
   );
 };

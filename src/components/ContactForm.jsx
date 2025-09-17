@@ -69,7 +69,7 @@ const ContactForm = ({property}) => {
       {/* Price & Contact Buttons */}
       <div className="price-section">
         <div className="price-amount">
-        price = ${property?.price}
+        price = ${property?.rate}
         </div>
         <div className="contact-buttons">
           <button className="phone-btn" onClick={handlePhone}>

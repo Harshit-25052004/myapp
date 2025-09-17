@@ -1,10 +1,11 @@
+/* --- Base Overlay --- */
 .booking-popup-overlay {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.75);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,47 +13,51 @@
   padding: 1rem;
 }
 
+/* --- Main Popup Container & Frame --- */
 .booking-popup {
-  background: white;
-  border-radius: 12px;
+  background: #ffffff;
+  border-radius: 8px;
   width: 100%;
-  max-width: 500px;
+  max-width: 600px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 60px rgba(11, 60, 110, 0.3);
   animation: popupFadeIn 0.3s ease-out;
+  border: 4px solid #0b3c6e;
 }
 
 @keyframes popupFadeIn {
   from {
     opacity: 0;
-    transform: scale(0.9) translateY(-20px);
+    transform: scale(0.95);
   }
   to {
     opacity: 1;
-    transform: scale(1) translateY(0);
+    transform: scale(1);
   }
 }
 
+/* --- Popup Header (Blue Box) --- */
 .booking-popup-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1.5rem 2rem;
-  border-bottom: 1px solid #eee;
+  padding: 1.25rem 2rem;
+  background: #0b3c6e;
 }
 
 .booking-popup-title {
-  font-size: 1.5rem;
+  font-size: 1.8rem;
   font-weight: 600;
-  color: #333;
+  color: #d4af37;
   margin: 0;
 }
 
 .close-btn {
   background: none;
   border: none;
-  color: #666;
+  font-size: 1.5rem;
+  color: #ffffff;
   cursor: pointer;
   padding: 0.5rem;
   border-radius: 50%;
@@ -60,67 +65,146 @@
 }
 
 .close-btn:hover {
-  background: #f5f5f5;
-  color: #333;
+  background: rgba(255, 255, 255, 0.1);
+  color: #d4af37;
 }
 
+/* --- Property Name Display --- */
 .property-name-display {
-  padding: 1rem 2rem;
-  background: #f8f9fa;
-  border-bottom: 1px solid #eee;
+  padding: 1.5rem 2rem 1rem;
+  background: #ffffff;
+  text-align: center;
 }
 
 .property-name-display h3 {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.9rem;
   color: #d4af37;
   font-weight: 600;
 }
 
+/* --- Bullet Point Details Section --- */
+.property-details {
+  padding: 1.5rem 2rem 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.property-details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.property-details li {
+  position: relative;
+  padding-left: 1.2rem;
+  margin-bottom: 0.75rem;
+  display: flex;
+  /* UPDATED: Removed justify-content: space-between */
+  align-items: center;
+  font-size: 1rem;
+}
+
+.property-details li:last-child {
+  margin-bottom: 0;
+}
+
+.property-details li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background-color: #d4af37;
+  border-radius: 50%;
+}
+
+.property-details .detail-label {
+  font-weight: 600;
+  color: #0b3c6e;
+  margin-right: 0.5rem; /* UPDATED: Added space between label and value */
+}
+
+.property-details .detail-value {
+  color: #333;
+}
+
+/* --- Form Styling --- */
 .booking-form {
   padding: 2rem;
 }
 
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
 .form-group {
   margin-bottom: 1.5rem;
+  flex: 1 1 0;
+  min-width: 200px;
+}
+
+.form-group-frame {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+  height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-group-frame:focus-within {
+  border-color: #d4af37;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
 }
 
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #333;
+  font-weight: 600;
+  color: #0b3c6e;
   font-size: 0.9rem;
 }
 
 .form-group input {
   width: 100%;
-  padding: 0.75rem 1rem;
-  border: 2px solid #e1e5e9;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ced4da;
   border-radius: 6px;
   font-size: 1rem;
+  color: #000000;
   transition: all 0.3s ease;
   box-sizing: border-box;
+  background-color: #ffffff;
 }
 
 .form-group input:focus {
   outline: none;
   border-color: #d4af37;
-  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
 }
 
 .form-group input::placeholder {
   color: #999;
 }
 
+/* --- Submit Button --- */
 .submit-btn {
   width: 100%;
   background: #d4af37;
-  color: white;
+  color: #0b3c6e;
   border: none;
   padding: 1rem 2rem;
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -129,48 +213,21 @@
 
 .submit-btn:hover {
   background: #b8941f;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
+/* --- Responsive Design --- */
+@media (max-width: 576px) {
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
   .booking-popup {
     margin: 1rem;
     max-width: none;
-  }
-  
-  .booking-popup-header {
-    padding: 1rem 1.5rem;
-  }
-  
-  .booking-form {
-    padding: 1.5rem;
-  }
-  
-  .property-name-display {
-    padding: 1rem 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .booking-popup-overlay {
-    padding: 0.5rem;
-  }
-  
-  .booking-popup-header {
-    padding: 1rem;
-  }
-  
-  .booking-form {
-    padding: 1rem;
-  }
-  
-  .property-name-display {
-    padding: 1rem;
-  }
-  
-  .booking-popup-title {
-    font-size: 1.3rem;
   }
 }

@@ -21,6 +21,18 @@ export default function ViewPropertyPopup({ isOpen, onClose, property }) {
   });
   const [bookingData, setBookingData] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState('all');
+  const [isBookingPopupOpen, setIsBookingPopupOpen] = useState(false);
+
+  // Corrected function to open the booking popup
+  const openBookingPopup = (plot) => {
+    setBookingData(plot); // Set the plot data for the popup
+    setIsBookingPopupOpen(true); // Open the popup
+  };
+
+  const closeBookingPopup = () => {
+    setIsBookingPopupOpen(false);
+    setBookingData(null); // Clear the plot data when closing
+  };
 
   useEffect(() => {
     if (property?._id) {
@@ -49,14 +61,6 @@ export default function ViewPropertyPopup({ isOpen, onClose, property }) {
   }, [property]);
 
   if (!isOpen || !property) return null;
-
-  const handleBookClick = (plot) => {
-    setBookingData(plot);
-  };
-
-  const handleBookingClose = () => {
-    setBookingData(null);
-  };
 
   const safeRender = (value) => {
     if (!value) return '';
@@ -123,9 +127,23 @@ export default function ViewPropertyPopup({ isOpen, onClose, property }) {
                   key={plot._id || `${selectedStatus}-${index}`}
                   className={`plot-card ${plot.status?.toLowerCase() || 'available'}`}
                 >
-                  <Square size={16} /> {safeRender(plot.plot_number)}
+                  {/* Plot Number as Title */}
+                  <div className="plot-number">
+                    {safeRender(plot.plot_number) || 'Unknown'}
+                  </div>
+
+                  {/* Plot Details */}
+                  <div className="plot-details">
+                    <p><Compass size={14} /> Facing: {safeRender(plot.facing) || 'N/A'}</p>
+                    <p><Square size={14} /> {safeRender(plot.square_feet) || '0'} sq.ft</p>
+                    <p><CheckCircle size={14} /> Status: {safeRender(plot.status) || 'Unknown'}</p>
+                  </div>
+
+                  {/* Booking Button */}
                   {plot.status?.toLowerCase() === 'available' && (
-                    <button className="book-btn" onClick={() => handleBookClick(plot)}>Book</button>
+                    <button className="book-btn" onClick={() => openBookingPopup(plot)}>
+                      Book
+                    </button>
                   )}
                 </div>
               ))}
@@ -138,11 +156,12 @@ export default function ViewPropertyPopup({ isOpen, onClose, property }) {
         </div>
 
         {/* Booking Popup */}
-        {bookingData && (
+        {isBookingPopupOpen && (
           <BookingPopup
             plot={bookingData}
             property={property}
-            onClose={handleBookingClose}
+            isOpen={isBookingPopupOpen}
+            onClose={closeBookingPopup}
           />
         )}
       </div>

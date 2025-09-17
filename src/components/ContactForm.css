@@ -1,71 +1,70 @@
+/* Contact Form Component Styles */
 
-/* Contact Form Container */
+/* Contact Form Container - Right Sidebar */
 .contact-form-container {
-  grid-column: 2;
   position: sticky;
-
-  z-index: 500;
-  top: 110px;
-  background: #fff;
-  border: 1px solid #d1d5db; /* Matching darker boundary */
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05); /* Matching shadow */
-  margin-right: 25px; /* Removed extra margin */
+  top: 6rem;
+  background: #ffffff; /* Changed from #f8f9fa to white */
+  border: 1px solid #d1d5db;
+  border-radius: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Softened shadow for white background */
   padding: 0;
-   margin-top: 115px;
-  padding: 0;
-  width: 35%;
-  mix-blend-mode: multiply;
-  float: inline-end;
+  overflow: hidden;
+  width: 100%;
 }
 
-/* Form Sections */
+
+/* Price Section */
 .price-section {
-   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
   border-bottom: 1px solid #eee;
-  padding-bottom: 15px;
-  margin-bottom: 15px;
+  gap: 1rem;
 }
 
 .price-amount {
-font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
-  color: #aa2626;
+  color: #0B3C6E;
+  margin: 0;
+  text-align: center;
 }
 
+/* Contact Buttons */
 .contact-buttons {
- 
-  grid-template-columns: 1fr 1fr;
- 
-  margin-bottom: 1.25rem;
-   display: flex;
-  gap: 10px;
+  display: flex;
+  gap: 8px;
+  width: 100%;
 }
 
-.phone-btn, 
+.phone-btn,
 .whatsapp-btn {
- 
-
-    display: flex;
+  display: flex;
   align-items: center;
   gap: 6px;
   border: none;
-  padding: 8px 14px;
+  padding: 10px 16px;
   border-radius: 6px;
   font-size: 14px;
+  font-weight: 500;
   cursor: pointer;
   color: white;
-  transition: background 0.3s ease;
+  transition: all 0.3s ease;
+  flex: 1;
+  justify-content: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
+
 .phone-btn {
-  background: #007bff;
+  background: #0B3C6E;
 }
 
 .phone-btn:hover {
-  background: #0056b3;
+  background: #083454;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(11, 60, 110, 0.3);
 }
 
 .whatsapp-btn {
@@ -74,21 +73,48 @@ font-size: 24px;
 
 .whatsapp-btn:hover {
   background: #1ea955;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
 }
+
+/* Rental Yield */
+.rental-yield {
+  font-size: 0.9rem;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.rental-yield:hover {
+  color: #0B3C6E;
+  background: #f1f1f1; /* Changed for better contrast on white */
+}
+
+.rental-yield .star {
+  color: #ffc107;
+  font-size: 1rem;
+}
+
+/* Agent Section */
 .agent-section {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  padding: 15px;
-  background: #f9f9f9;
-  border-radius: 10px;
-  margin-bottom: 15px;
+  padding: 1.5rem;
+  background: #ffffff; /* Changed from #f8f9fa to white */
+  border-bottom: 1px solid #eee;
 }
 
 .agent-info {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  align-items: flex-start;
+  gap: 12px;
 }
 
 .agent-photo {
@@ -96,85 +122,145 @@ font-size: 24px;
   height: 60px;
   border-radius: 50%;
   object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .agent-details {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .agent-name {
   font-size: 16px;
-  font-weight: bold;
-  color: #222;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 2px;
 }
 
 .agent-title {
   font-size: 14px;
-  color: #555;
+  color: #0B3C6E;
+  margin-bottom: 4px;
+  font-weight: 500;
 }
 
 .agent-language {
   font-size: 12px;
   color: #777;
 }
+
+/* Contact Form */
 .contact-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
+  padding: 1.5rem;
 }
 
 .form-row {
   display: flex;
   flex-direction: column;
+  gap: 12px;
 }
 
 .form-input,
 .form-textarea {
-  padding: 10px;
-  border: 1px solid #ccc;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
   border-radius: 6px;
   font-size: 14px;
   outline: none;
-  transition: border-color 0.3s ease;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  background: #fff;
 }
 
 .form-input:focus,
 .form-textarea:focus {
-  border-color: #007bff;
+  border-color: #0B3C6E;
+  box-shadow: 0 0 0 3px rgba(11, 60, 110, 0.1);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #9ca3af;
 }
 
 .form-textarea {
   resize: vertical;
-  min-height: 80px;
+  min-height: 100px;
+  font-family: inherit;
 }
 
 .submit-btn {
-  background: #007bff;
+  background: #0B3C6E;
   color: white;
   border: none;
-  padding: 10px;
+  padding: 12px 16px;
   border-radius: 6px;
   font-size: 15px;
+  font-weight: 500;
   cursor: pointer;
-  
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .submit-btn:hover {
-  background: #0056b3;
+  background: #083454;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(11, 60, 110, 0.3);
 }
 
-/* Responsive Design */
+.submit-btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive Design for Contact Form */
+@media (max-width: 1024px) {
+  .contact-form-container {
+    position: static;
+    order: 1;
+    margin-bottom: 2rem;
+    max-width: 100%;
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-form {
+    padding: 1.2rem;
+  }
+  
+  .price-section,
+  .agent-section {
+    padding: 1.2rem;
+  }
+  
+  .price-amount {
+    font-size: 24px;
+  }
+  
+  .contact-buttons {
+    flex-direction: row;
+  }
+}
+
 @media (max-width: 600px) {
   .price-section {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+    gap: 0.8rem;
   }
 
   .contact-buttons {
     flex-direction: column;
-    width: 100%;
+    gap: 12px;
   }
 
   .phone-btn,
@@ -183,42 +269,25 @@ font-size: 24px;
     justify-content: center;
   }
 }
-/* Responsive Design */
-@media (max-width: 1024px) {
-  .complete-box {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-  
-  .contact-form-container {
-    position: static;
-    margin-top: 1.5rem;
-  }
-}
-
-@media (max-width: 768px) {
-  .complete-box {
-    padding: 0 1rem;
-  }
-  
-  .contact-buttons {
-    grid-template-columns: 1fr;
-  }
-}
 
 @media (max-width: 480px) {
   .price-section,
   .agent-section,
   .contact-form {
-    padding: 1.25rem;
+    padding: 1rem;
   }
   
   .agent-info {
     flex-direction: column;
     text-align: center;
+    align-items: center;
   }
   
   .agent-photo {
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .price-amount {
+    font-size: 22px;
   }
 }

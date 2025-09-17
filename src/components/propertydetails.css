@@ -1,124 +1,124 @@
 /* Property Detail Page Styles */
-.complete-box {
-  margin-left: 25px;
-  padding: 0;
-  width: 65%;
-  mix-blend-mode: multiply;
-}
-
-.complete-box hr {
-  border: none;
- 
-  margin: 12px 0;
-} 
-
 .property-detail-page {
   min-height: 100vh;
-  background-color: #f8f9fa;
+  background-color:#fff;
   font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
   margin-left: 0;
   padding-top: 60px; /* Account for fixed navbar */
 }
 
-/* Breadcrumb Navigation */
 .breadcrumb-container {
-  
-  mix-blend-mode: multiply;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid #e9ecef;
-  
-    margin-top: 30px; /* pushes it down from the navbar */
-  margin-bottom: 15px;
+  background: #fff;
+  padding: 0.6rem 1.2rem;        /* Inner spacing */
+  border-top: 1px solid #dcdcdc; /* Thin top border */
+  border-bottom: 1px solid #dcdcdc;
+  margin-top: 35px;               /* ✅ Only 5px gap from navbar */
+  margin-bottom: 15px;           /* Space below breadcrumb */
 }
 
 .breadcrumb {
-
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 1.5rem;
+  margin: 0;
+  padding: 0;
   display: flex;
   align-items: center;
-  gap: 0.25rem;
-  font-size: 0.85rem;
-  color: #666;
+  gap: 0.4rem;
+  font-size: 0.8rem;            /* Reduced font size */
+  font-weight: 500;
+  color: #555;
 }
 
 .breadcrumb-link {
-  color: #666;
+  color: #0B3C6E;
   text-decoration: none;
   transition: color 0.2s ease;
-  font-weight: 500;
 }
 
 .breadcrumb-link:hover {
-  color: #2d5a3d;
+  color: #083454;
+  text-decoration: underline;
 }
 
 .breadcrumb-separator {
-  margin: 0 0.2rem;
+  margin: 0 0.3rem;
   color: #999;
-  font-size: 0.7rem;
+  font-size: 0.75rem;
 }
 
 .breadcrumb-current {
-  color: #2d5a3d;
+  color: #222;
   font-weight: 600;
 }
 
 /* Main Container */
 .property-detail-container {
-  max-width: 1200px;
-  margin: 1rem auto 2rem;
-  padding: 0 1.5rem;
+  max-width: 1300px; /* UPDATED: Increased width */
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+/* Left Side - Property Content */
+.complete-box {
+  flex: 2;
+  max-width: 70%;
 }
 
 .property-content {
-  background: white;
-  border-radius: 6px;
+  background: #fff;
+  border-radius: 0;
   overflow: hidden;
- 
+  box-shadow: none;
+  margin-bottom: 2rem;
+  margin-left: 0.5px;  /* reduce space from left */
 }
 
 /* Property Header */
 .property-header {
-  padding: 1.25rem 1.5rem;
+  padding: 1.5rem 1.5rem 1rem;
   border-bottom: 1px solid #f0f0f0;
 }
 
 .property-title-section h1 {
-  font-size: 1.7rem;
+  font-size: 2rem;
   font-weight: 600;
   color: #333;
-  margin: 0.1rem 0 0.3rem;
+  margin: 0 0 0.5rem;
   line-height: 1.2;
 }
 
 .property-title-section h3 {
-  font-size: 1.1rem;
-  color: #2d5a3d;
+  font-size: 1.2rem;
+  color: #666;
   margin: 0 0 0.5rem;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 1.3;
 }
 
 .property-title-section p {
   color: #666;
   margin: 0.2rem 0;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   line-height: 1.4;
 }
 
 .property-meta-line {
   display: flex;
-  gap: 1.2rem;
+  gap: 1.5rem;
   flex-wrap: wrap;
-  margin: 0.5rem 0 0;
+  margin: 1rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid #999;      /* darker line */
 }
 
 .property-meta-line p {
   margin: 0;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   color: #555;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
 }
 
 .property-meta-line strong {
@@ -126,56 +126,63 @@
   font-weight: 600;
 }
 
-/* Property Images */
-.property-images {
-  padding: 1rem 1.5rem;
+/* === NEW Property Image Grid Styles === */
+.property-images-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr; /* Main image is twice the width of the secondary column */
+  gap: 1rem;
+  height: 450px; /* Fixed height for the container */
+  padding: 1.5rem;
+  box-sizing: border-box;
 }
 
-.main-image {
-  margin-bottom: 1rem;
-  border-radius: 6px;
-  overflow: hidden;
+.main-image-container {
+  grid-column: 1 / 2;
   
+  overflow: hidden;
 }
 
-.featured-image {
-  width: 100%;
-  height: 400px;
-  object-fit: cover;
-  transition: transform 0.25s ease;
-}
-
-.featured-image:hover {
-  transform: scale(1.01);
-}
-
-.image-thumbnails {
+.secondary-images-container {
+  grid-column: 2 / 3;
   display: flex;
-  gap: 0.6rem;
-  overflow-x: auto;
-  padding-bottom: 0.5rem;
-  margin-top: 0.8rem;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-.thumbnail {
-  width: 90px;
-  height: 68px;
+.main-grid-image,
+.secondary-grid-image {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  border-radius: 4px;
+  
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.main-grid-image:hover,
+.secondary-grid-image:hover {
+  transform: scale(1.02);
   cursor: pointer;
-  border: 1px solid transparent;
-  transition: all 0.2s ease;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
-.thumbnail:hover {
-  border-color: #2d5a3d;
-  opacity: 0.85;
+.secondary-images-container .secondary-grid-image {
+    /* Each secondary image takes up half the vertical space */
+    flex: 1;
+    /* This is crucial for flexbox to correctly calculate height */
+    min-height: 0;
 }
 
-.thumbnail.active {
-  border-color: #2d5a3d;
-  opacity: 1;
+/* === REMOVED Old Property Image Styles === */
+/*
+.property-images {
+  padding: 1.5rem;
 }
+.main-image { ... }
+.featured-image { ... }
+.image-thumbnails { ... }
+.thumbnail { ... }
+*/
 
 /* Property Description */
 .property-description {
@@ -184,83 +191,88 @@
   line-height: 1.6;
 }
 
+.property-description > p:first-of-type {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+
+.property-description > p:nth-of-type(2) {
+  font-size: 0.95rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
 .property-description h3 {
-  font-size: 1.2rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: #333;
-  margin: 1.2rem 0 0.8rem;
-  padding-bottom: 0.4rem;
-  border-bottom: 1px solid #eee;
+  margin: 1.5rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #f0f0f0;
 }
 
 .property-description ul {
   list-style: none;
   padding: 0;
-  margin: 0.8rem 0;
+  margin: 1rem 0;
 }
 
 .property-description li {
   position: relative;
-  padding-left: 1.2rem;
-  margin-bottom: 0.4rem;
-  font-size: 0.92rem;
+  padding-left: 1.5rem;
+  margin-bottom: 0.6rem;
+  font-size: 0.93rem;
+  color: #555;
 }
 
 .property-description li::before {
   content: "•";
-  color: #2d5a3d;
+  color: #0B3C6E;
   font-weight: bold;
   position: absolute;
-  left: 0.3rem;
+  left: 0.5rem;
+  font-size: 1.2rem;
 }
 
 /* Contact Info */
 .contact-info {
-  margin-top: 1.5rem;
-  padding: 1.2rem;
+  margin-top: 2rem;
+  padding: 1.5rem;
   background-color: #f8f9fa;
-  border-radius: 6px;
-  border-left: 3px solid #2d5a3d;
+  border-radius: 8px;
+  border-left: 4px solid #0B3C6E;
 }
 
 .contact-info p {
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.5rem;
   font-size: 0.9rem;
+  color: #555;
 }
 
 .contact-info p:first-child {
   font-weight: 600;
   color: #333;
-  margin-bottom: 0.6rem;
-}
-
-/* Scrollbar Styling */
-.image-thumbnails::-webkit-scrollbar {
-  height: 3px;
-}
-
-.image-thumbnails::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 3px;
-}
-
-.image-thumbnails::-webkit-scrollbar-thumb {
-  background: #2d5a3d;
-  border-radius: 3px;
-}
-
-.image-thumbnails::-webkit-scrollbar-thumb:hover {
-  background: #1e3d2a;
+  margin-bottom: 0.8rem;
+  font-size: 1rem;
 }
 
 /* Responsive Design */
 @media (max-width: 1024px) {
   .property-detail-container {
-    padding: 0 1.2rem;
+    flex-direction: column;
+    padding: 0;
   }
   
-  .featured-image {
-    height: 360px;
+  .complete-box {
+    max-width: 100%;
+    order: 2;
+  }
+  
+  .property-images-grid {
+    height: 350px;
   }
 }
 
@@ -271,30 +283,26 @@
   }
   
   .property-header,
-  .property-images,
+  .property-images-grid,
   .property-description {
-    padding: 1rem;
+    padding: 1.2rem;
   }
   
   .property-title-section h1 {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
   
   .property-title-section h3 {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
   
-  .featured-image {
-    height: 300px;
+  .property-images-grid {
+    height: 280px;
   }
-  
-  .thumbnail {
-    width: 80px;
-    height: 60px;
-  }
-  
+
   .property-meta-line {
     gap: 1rem;
+    flex-direction: column;
   }
 }
 
@@ -304,31 +312,23 @@
   }
   
   .property-detail-container {
-    padding: 0 1rem;
-    margin: 0.5rem auto 1.5rem;
+    padding: 0;
+    gap:1rem;
   }
   
   .property-title-section h1 {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
   }
   
-  .featured-image {
-    height: 250px;
+  .property-images-grid {
+    /* Stack images on small screens */
+    grid-template-columns: 1fr;
+    height: auto;
   }
-  
-  .property-meta-line {
-    gap: 0.8rem;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-  
-  .property-meta-line p {
-    font-size: 0.82rem;
-  }
-  
-  .thumbnail {
-    width: 70px;
-    height: 52px;
+
+  .secondary-images-container {
+    /* Side-by-side on small screens */
+    flex-direction: row;
   }
 }
 
@@ -337,8 +337,104 @@
     font-size: 0.75rem;
     padding: 0 0.8rem;
   }
-  
-  .featured-image {
-    height: 220px;
-  }
 }
+
+.contact-form-container {
+  flex: 1;
+  max-width: 30%;
+}
+
+/* Default navbar before scrolling */
+.navbar.transparent {
+  background-color: white;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: none;
+}
+
+/* Navbar after scrolling */
+.navbar.scrolled {
+  background-color: #0B3C6E; /* or your preferred color */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+/* === NEW Property Details & Location Styles === */
+
+/* Update the existing .property-details-section */
+.property-details-section {
+  padding: 1.5rem;
+  margin-top: 1rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #0B3C6E;
+  display: inline-block;
+}
+
+/* Updated details grid to match the image's layout */
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem 2rem;
+  padding-top: 1rem;
+}
+
+/* Updated detail item to match the image's style */
+.detail-item {
+  display: flex;
+  align-items: center; /* Vertically align icon and text */
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* New icon container */
+.detail-icon {
+  font-size: 1.5rem; /* Set icon size */
+  color: #6c757d; /* A subtle gray color for icons */
+  margin-right: 0.75rem; /* Space between icon and text */
+}
+
+.detail-label-value-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Reduced font sizes for label and value */
+.detail-label {
+  font-size: 0.85rem; /* Smaller font size */
+  color: #666;
+  margin-bottom: 0.25rem; /* Space between label and value */
+}
+
+/* ... (all code before this section remains the same) */
+
+.detail-value {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #222;
+}
+
+/* === UPDATED ICONS TO MATCH IMAGE EXACTLY === */
+.detail-item.bedrooms .detail-icon::before {
+  content: '🛏️'; /* Bed icon */
+}
+.detail-item.bathrooms .detail-icon::before {
+  content: '🛁'; /* Bathtub icon */
+}
+.detail-item.size .detail-icon::before {
+  content: '➕'; /* Plus icon as shown in image */
+}
+.detail-item.offering-type .detail-icon::before {
+  content: 'ℹ️'; /* Info icon */
+}
+.detail-item.permit-no .detail-icon::before {
+  content: '📄'; /* Document/Permit icon */
+}
+
+
+/* Responsive Design */
+/* ... (all code after this section remains the same) */
